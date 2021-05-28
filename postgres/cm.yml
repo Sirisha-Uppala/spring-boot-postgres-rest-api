@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-cm
+  labels:
+    name: postgres
+data:
+   postgres-host: "postgres-service"

@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-vol-pvc
+#  namespace: '{{ meta.namespace }}'
+  labels:
+    type: standard
+    name: postgres
+spec:
+  storageClassName: standard
+  resources:
+    requests:
+       storage: 1Gi
+  accessModes: 
+     - ReadWriteMany

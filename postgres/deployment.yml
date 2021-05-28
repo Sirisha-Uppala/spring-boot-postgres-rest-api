@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  #namespace: '{{ meta.namespace }}'
+spec:
+  replicas: 1
+  selector:
+      matchLabels:
+        name: postgres
+  template:
+      metadata:
+        labels:
+          name: postgres
+      spec:
+        containers:
+        - name: postgres-pod
+          image: postgres
+          ports:
+            - containerPort: 5432
+          env:
+           - name: POSTGRES_USER
+             valueFrom:
+                secretKeyRef:
+                   name: postgres-secret
+                   key: postgres-user
+           - name: POSTGRES_PASSWORD
+             valueFrom:
+                secretKeyRef:
+                   name: postgres-secret
+                   key: postgres-passwd
+#           - name: POSTGRES_ROOTPASSWORD
+#             valueFrom:
+#                secretKeyRef:
+#                   name: postgres-secret
+#                   key: postgres-rootpasswd
+           - name: POSTGRES_DB
+             valueFrom:
+                secretKeyRef:
+                   name: postgres-secret
+                   key: postgres-db                   
+          envFrom:
+           - configMapRef:
+                name: postgres-cm
+          volumeMounts:
+             - name: postgres-vol
+               mountPath: /mnt
+        volumes:
+          - name: postgres-vol
+            persistentVolumeClaim:
+               claimName: postgres-vol-pvc
+          
