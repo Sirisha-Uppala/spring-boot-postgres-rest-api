@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-app-cm
+  namespace: default
+  labels:
+    app: engineer
+    name: spring
+data:
+  DB_HOST: "postgres-service"
+  DB_PORT: "5432"
+  DB_URL: "jdbc:postgresql://postgres-service.default:5432/postgres"

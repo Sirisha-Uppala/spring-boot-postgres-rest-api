@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-engineer-app
+  namespace: default
+  labels:
+    app: engineer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: engineer
+  template:
+    metadata:
+      labels:
+        app: engineer
+        name: spring
+    spec:
+      containers:
+        - name: engineer-container
+          image: docker.io/siri9911/spring-postgres-rest-app     #spring-app
+          ports:
+            - containerPort: 8077
+          env:          
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: spring-app-secret
+                  key: db_name
+            - name: DB_PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: spring-app-secret
+                  key: db_passwd
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: spring-app-secret
+                  key: db_user
+          envFrom:
+             - configMapRef:
+                 name: spring-app-cm
