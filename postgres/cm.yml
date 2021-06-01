@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-cm
+  namespace: default
   labels:
     name: postgres
 data:

@@ -3,7 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: postgres-vol-pvc
-#  namespace: '{{ meta.namespace }}'
+  namespace: default
   labels:
     type: standard
     name: postgres
