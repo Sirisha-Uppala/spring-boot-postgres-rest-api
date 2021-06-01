@@ -1,0 +1,48 @@
+#entrypoint.sh
+
+if [ -z ${DB_HOST} ]
+ then
+ DB_HOST='postgres-service'
+fi
+
+if [ -z ${DB_PORT} ]
+ then
+ DB_PORT='5432'
+fi
+
+if [ -z ${DB_NAME} ]
+ then
+ DB_NAME='postgres'
+fi
+
+if [ -z ${DB_USER} ]
+ then
+ DB_USER='postgres'
+fi
+
+if [ -z ${DB_PASSWORD} ]
+ then
+ DB_PASSWORD='postgrespass'
+fi
+
+if [ -z ${DB_URL} ]
+ then
+ DB_URL='jdbc:postgresql://postgres-service:5432/postgres'
+fi
+
+#replace values in application.properties file
+cd /work/java/test1/src/main/resources
+sed -i 's/{DB_URL}/${DB_URL}/g;s/{DB_HOST}/${DB_HOST}/g;s/{DB_PORT}/${DB_PORT}/g;s/{DB_NAME}/${DB_NAME}/g;s/{DB_USER}/${DB_USER}/g;s/{DB_PASSWORD}/${DB_PASSWORD}/g' application.properties 
+cat application.properties
+echo "application.properties modified"
+
+#run java code using mvn
+cd /work/java/test1
+echo "creating jar"
+#mvn clean package -e
+mvn clean package spring-boot:repackage -DskipTests
+
+#run jar
+cd /work/java/test1/target
+echo "running jar"
+java -jar test-0.0.1-SNAPSHOT.jar
