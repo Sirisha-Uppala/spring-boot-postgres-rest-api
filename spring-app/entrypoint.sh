@@ -27,12 +27,12 @@ fi
 
 if [ -z ${DB_URL} ]
  then
- DB_URL='jdbc:postgresql://postgres-service:5432/postgres'
+ DB_URL='jdbc:postgresql://postgres-service:${DB_PORT}/postgres'
 fi
 
 #replace values in application.properties file
 cd /work/java/test1/src/main/resources
-sed -i 's/{DB_URL}/${DB_URL}/g;s/{DB_HOST}/${DB_HOST}/g;s/{DB_PORT}/${DB_PORT}/g;s/{DB_NAME}/${DB_NAME}/g;s/{DB_USER}/${DB_USER}/g;s/{DB_PASSWORD}/${DB_PASSWORD}/g' application.properties 
+sed -i.org 's/%{DB_URL}%/${DB_URL}/g;s/%{DB_USER}%/${DB_USER}/g;s/%{DB_PASSWORD}%/${DB_PASSWORD}/g' application.properties 
 cat application.properties
 echo "application.properties modified"
 
