@@ -73,7 +73,6 @@
                 envFrom:
                   - configMapRef:
                       name: spring-app-cm
-	
 - name: Spring Engineer App Service
   k8s:
     definition:
