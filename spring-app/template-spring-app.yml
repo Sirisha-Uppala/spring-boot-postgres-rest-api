@@ -1,0 +1,96 @@
+---
+- name: Spring Engineer App CM
+  k8s:
+    definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: spring-app-cm
+        namespace: default
+      labels:
+        app: engineer
+        name: spring
+      data:
+        DB_HOST: "postgres-service"
+        DB_PORT: "5432"
+        DB_URL: "jdbc:postgresql://postgres-service.default:5432/postgres"
+- name: Spring Engineer App Secret
+  k8s:
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: spring-app-secret
+        namespace: default
+      labels:
+        app: engineer
+      data:
+        db_name: cG9zdGdyZXM=
+        db_user: cG9zdGdyZXM=
+        db_passwd: cG9zdGdyZXNwYXNz
+- name: Spring Engineer App Deployment
+  k8s:
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: spring-engineer-app
+        namespace: default
+      labels:
+        app: engineer
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: engineer
+        template:
+          metadata:
+          labels:
+            app: engineer
+            name: spring
+          spec:
+            containers:
+              - name: engineer-container
+                image: docker.io/siri9911/spring-postgres-rest-app     #spring-app
+                ports:
+                  - containerPort: 8077
+                env:          
+                  - name: DB_NAME
+                    valueFrom:
+                      secretKeyRef:
+                        name: spring-app-secret
+                        key: db_name
+                  - name: DB_PASSWD
+                    valueFrom:
+                      secretKeyRef:
+                        name: spring-app-secret
+                        key: db_passwd
+                  - name: DB_USER
+                    valueFrom:
+                      secretKeyRef:
+                        name: spring-app-secret
+                        key: db_user
+                envFrom:
+                  - configMapRef:
+                      name: spring-app-cm
+	
+- name: Spring Engineer App Service
+  k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: spring-engineer-service
+        namespace: default
+      labels:
+        name: spring
+        app: engineer
+      spec:
+        type: NodePort
+        ports:
+          - protocol: TCP
+            port: 8077
+            targetPort: 32566
+        selector:
+          app: engineer
+          name: spring
