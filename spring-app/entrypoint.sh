@@ -20,9 +20,9 @@ if [ -z ${DB_USER} ]
  DB_USER='postgres'
 fi
 
-if [ -z ${DB_PASSWORD} ]
+if [ -z ${DB_PASSWD} ]
  then
- DB_PASSWORD='postgrespass'
+ DB_PASSWD='postgrespass'
 fi
 
 if [ -z ${DB_URL} ]
@@ -32,7 +32,12 @@ fi
 
 #replace values in application.properties file
 cd /work/java/test1/src/main/resources
-sed -i.org 's/%{DB_URL}%/${DB_URL}/g;s/%{DB_USER}%/${DB_USER}/g;s/%{DB_PASSWORD}%/${DB_PASSWORD}/g' application.properties 
+#sed -i.org 's/%{DB_URL}%/${DB_URL}/g;s/%{DB_USER}%/${DB_USER}/g;s/%{DB_PASSWORD}%/${DB_PASSWORD}/g' application.properties 
+
+sed "s/%{DB_PASSWORD}%/${DB_PASSWD}/g" application.properties.org > application.properties
+sed "s/%{DB_USER}%/${DB_USER}/g" application.properties.org > application.properties
+sed "s/%{DB_URL}%/${DB_URL}/g" application.properties.org > application.properties
+
 cat application.properties
 echo "application.properties modified"
 
