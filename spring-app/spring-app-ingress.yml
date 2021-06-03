@@ -5,7 +5,8 @@ metadata:
   name: spring-app-ingress
 spec:
   rules:
-  - http:
+  - host: spring-spp-service.io
+    http:
       paths:
       - path: /engineer
         pathType: Prefix
