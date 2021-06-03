@@ -4,8 +4,14 @@ kind: Ingress
 metadata:
   name: spring-app-ingress
 spec:
-  defaultBackend:
-    service:
-      name: spring-app-service
-      port:
-        number: 8077
+spec:
+  rules:
+    http:
+      paths:
+      - path: /engineer
+        pathType: Prefix
+        backend:
+          service:
+            name: spring-app-service
+            port:
+              number: 8077
