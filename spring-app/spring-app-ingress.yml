@@ -12,6 +12,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: spring-app-service
+            name: spring-engineer-service
             port:
               number: 8077
