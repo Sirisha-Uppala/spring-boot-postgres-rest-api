@@ -1,19 +1,19 @@
 ---
 apiVersion: route.openshift.io/v1 
-    kind: Route
-    metadata:
-      name: spring-engineer-app-route
-      namespace: default
-      labels:
-        app: engineer
-        name: spring
-    spec:
-      to:
-        kind: Service
-        name: spring-app-service
-        weight: 100
-      port:
-        targetPort: 8077
-      tls:
-        termination: passthrough
-      wildcardPolicy: None		
+kind: Route
+metadata:
+  name: spring-engineer-app-route
+  namespace: default
+  labels:
+    app: engineer
+    name: spring
+spec:
+  to:
+    kind: Service
+    name: spring-app-service
+    weight: 100
+  port:
+    targetPort: 8077
+  tls:
+    termination: passthrough
+  wildcardPolicy: None		
