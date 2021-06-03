@@ -4,9 +4,8 @@ kind: Ingress
 metadata:
   name: spring-app-ingress
 spec:
-spec:
   rules:
-    http:
+  - http:
       paths:
       - path: /engineer
         pathType: Prefix
